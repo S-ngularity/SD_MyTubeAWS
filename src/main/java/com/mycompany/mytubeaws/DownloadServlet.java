@@ -77,7 +77,7 @@ public class DownloadServlet extends HttpServlet
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
-	{
+	{System.out.println("DOWNLOADSERVLET AAAAAAAAAAAAAA");
 		String result = "";
 		String downloadLink = "";
 		

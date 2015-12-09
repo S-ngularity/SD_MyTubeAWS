@@ -55,10 +55,9 @@
 			</table>
 
 			<div class="uploadDiv">
-				<form method="POST" name="Upload" actionion="UploadServlet" enctype="multipart/form-data" >
-					<h3>Upload</h3>
-
-					File: <input type="file" name="videoFile" id="videoFile">
+				<h3>Upload</h3>
+				<form method="POST" name="Upload" action="UploadServlet" enctype="multipart/form-data" >
+					File: <input type="file" name="videoFileId" id="videoFileId">
 					<br>
 					<br>
 					<input type="submit" value="Upload">

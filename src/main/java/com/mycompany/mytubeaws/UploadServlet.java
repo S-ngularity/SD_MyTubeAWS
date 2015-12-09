@@ -81,79 +81,64 @@ public class UploadServlet extends HttpServlet
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException
 	{
-	    String inputName = request.getParameter("uploadName");
-	    String inputDescVideo = request.getParameter("descriptionVideo");
-		
 		String result = "";
 
-//	    if(inputName == null || inputDescVideo == null)
-//		{
-//			if(inputName == null)
-//				result += "inputName is null; ";
-//			if(inputDescVideo == null)
-//				result += "inputDescVideo is null; ";
-//	    }
-//	    else if(inputName.length() == 0)
-//			result += "inputName is empty; ";
-//	    else
-	    {
-			// configures upload settings
-			DiskFileItemFactory factory = new DiskFileItemFactory(); // sets memory threshold - beyond which files are stored in disk
-			factory.setSizeThreshold(1024*1024*3); // 3mb
-			factory.setRepository(new File(System.getProperty("java.io.tmpdir"))); // sets temporary location to store files
+		// configures upload settings
+		DiskFileItemFactory factory = new DiskFileItemFactory(); // sets memory threshold - beyond which files are stored in disk
+		factory.setSizeThreshold(1024*1024*3); // 3mb
+		factory.setRepository(new File(System.getProperty("java.io.tmpdir"))); // sets temporary location to store files
 
-			ServletFileUpload upload = new ServletFileUpload(factory);
-			upload.setFileSizeMax(1024*1024*40); // sets maximum size of upload file
-			upload.setSizeMax(1024*1024*50); // sets maximum size of request (include file + form data)
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		upload.setFileSizeMax(1024*1024*40); // sets maximum size of upload file
+		upload.setSizeMax(1024*1024*50); // sets maximum size of request (include file + form data)
 
-			try{
-				List<FileItem> formItems = upload.parseRequest(request); // parses the request's content to extract file data
+		try{
+			List<FileItem> formItems = upload.parseRequest(request); // parses the request's content to extract file data
 
-				if (formItems != null && formItems.size() > 0) // iterates over form's fields
+			if (formItems != null && formItems.size() > 0) // iterates over form's fields
+			{
+				for (FileItem item : formItems) // processes only fields that are not form fields
 				{
-					for (FileItem item : formItems) // processes only fields that are not form fields
+					if (!item.isFormField())
 					{
-						if (!item.isFormField())
+						String fileName = item.getName();
+
+						File file = File.createTempFile("aws-java-sdk-upload", "");
+						item.write(file); // write form item to file (?)
+
+						try
 						{
-							String fileName = item.getName();
-
-							File file = File.createTempFile("aws-java-sdk-upload", "");
-							item.write(file); // write form item to file (?)
-
-							try
-							{
-								s3.putObject(new PutObjectRequest(bucketName, fileName, file));
-								result += "File uploaded successfully; ";
-							}
-							catch (AmazonServiceException ase) {
-								System.out.println("Caught an AmazonServiceException, which means your request made it "
-									  + "to Amazon S3, but was rejected with an error response for some reason.");
-								System.out.println("Error Message:    " + ase.getMessage());
-								System.out.println("HTTP Status Code: " + ase.getStatusCode());
-								System.out.println("AWS Error Code:   " + ase.getErrorCode());
-								System.out.println("Error Type:       " + ase.getErrorType());
-								System.out.println("Request ID:       " + ase.getRequestId());
-								
-								result += "AmazonServiceException thrown; ";
-							}
-							catch (AmazonClientException ace) {
-								System.out.println("Caught an AmazonClientException, which means the client encountered "
-									  + "a serious internal problem while trying to communicate with S3, "
-									  + "such as not being able to access the network.");
-								System.out.println("Error Message: " + ace.getMessage());
-								
-								result += "AmazonClientException thrown; ";
-							}
-							
-							file.delete();
+							s3.putObject(new PutObjectRequest(bucketName, fileName, file));
+							result += "File uploaded successfully; ";
 						}
+						catch (AmazonServiceException ase) {
+							System.out.println("Caught an AmazonServiceException, which means your request made it "
+								  + "to Amazon S3, but was rejected with an error response for some reason.");
+							System.out.println("Error Message:    " + ase.getMessage());
+							System.out.println("HTTP Status Code: " + ase.getStatusCode());
+							System.out.println("AWS Error Code:   " + ase.getErrorCode());
+							System.out.println("Error Type:       " + ase.getErrorType());
+							System.out.println("Request ID:       " + ase.getRequestId());
+
+							result += "AmazonServiceException thrown; ";
+						}
+						catch (AmazonClientException ace) {
+							System.out.println("Caught an AmazonClientException, which means the client encountered "
+								  + "a serious internal problem while trying to communicate with S3, "
+								  + "such as not being able to access the network.");
+							System.out.println("Error Message: " + ace.getMessage());
+
+							result += "AmazonClientException thrown; ";
+						}
+
+						file.delete();
 					}
 				}
-			} catch (Exception ex) {
-				result += "Generic exception: '" + ex.getMessage() + "'; ";
-				ex.printStackTrace();
 			}
-	    } // else
+		} catch (Exception ex) {
+			result += "Generic exception: '" + ex.getMessage() + "'; ";
+			ex.printStackTrace();
+		}
 		
 		System.out.println(result);
 		
