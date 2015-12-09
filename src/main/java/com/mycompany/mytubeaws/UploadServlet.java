@@ -85,6 +85,9 @@ public class UploadServlet extends HttpServlet
 			throws ServletException, IOException
 	{
 		String result = "";
+		String fileName = null;
+		
+		boolean uploaded = false;
 
 		// configures upload settings
 		DiskFileItemFactory factory = new DiskFileItemFactory(); // sets memory threshold - beyond which files are stored in disk
@@ -104,17 +107,21 @@ public class UploadServlet extends HttpServlet
 				{
 					if (!item.isFormField())
 					{
-						String fileName = item.getName();
+						fileName = item.getName();
 						UUID id = UUID.randomUUID();
 						fileName = FilenameUtils.getBaseName(fileName) + "_ID-" + id.toString() + "." + FilenameUtils.getExtension(fileName);
 
 						File file = File.createTempFile("aws-java-sdk-upload", "");
 						item.write(file); // write form item to file (?)
+						
+						if(file.length() == 0)
+							throw new RuntimeException("No file selected or empty file uploaded.");
 
 						try
 						{
 							s3.putObject(new PutObjectRequest(bucketName, fileName, file));
 							result += "File uploaded successfully; ";
+							uploaded = true;
 						}
 						catch (AmazonServiceException ase) {
 							System.out.println("Caught an AmazonServiceException, which means your request made it "
@@ -145,6 +152,9 @@ public class UploadServlet extends HttpServlet
 			ex.printStackTrace();
 		}
 		
+		if(fileName != null && uploaded)
+			result += "Generated file ID: " + fileName;
+
 		System.out.println(result);
 		
 		request.setAttribute("resultText", result);

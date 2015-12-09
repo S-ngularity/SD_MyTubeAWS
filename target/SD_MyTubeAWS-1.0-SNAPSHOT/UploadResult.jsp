@@ -9,7 +9,7 @@
 <html>
 	<head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="stylesheet" type="text/css" href="/SD_MyTubeAWS/resources/allmedia.css" />
+		<link rel="stylesheet" type="text/css" href="/resources/allmedia.css" />
         <title>MyTube - Upload</title>
 	
 	<link rel="shortcut icon" href="http://i.imgur.com/kSaAQGi.png"/>

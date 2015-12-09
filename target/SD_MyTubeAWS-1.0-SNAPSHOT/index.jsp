@@ -18,7 +18,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="stylesheet" type="text/css" href="/SD_MyTubeAWS/resources/allmedia.css" />
+		<link rel="stylesheet" type="text/css" href="/resources/allmedia.css" />
         <title>MyTube</title>
 
 		<link rel="shortcut icon" href="http://i.imgur.com/kSaAQGi.png"/>
@@ -57,7 +57,7 @@
 			<div class="uploadDiv">
 				<h3>Upload</h3>
 				<form method="POST" name="Upload" action="UploadServlet" enctype="multipart/form-data" >
-					File: <input type="file" name="videoFileId" id="videoFileId">
+					<label>File: </label><input type="file" name="videoFileId" id="videoFileId">
 					<br>
 					<br>
 					<input type="submit" value="Upload">
@@ -71,7 +71,9 @@
 			<div class="uploadDiv">
 				<h3>Download</h3>
 				<form method="POST" name="Download" action="DownloadServlet">
-					Name: <input type="text" name="downloadKey">
+					<label>Name: </label><input type="text" name="downloadKey">
+					<br>
+					<br>
 					<input type="submit" value="Download">
 				</form>
 			</div>

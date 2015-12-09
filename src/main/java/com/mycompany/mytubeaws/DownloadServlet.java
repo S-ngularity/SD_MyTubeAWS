@@ -93,7 +93,6 @@ public class DownloadServlet extends HttpServlet
 			
 			try
 			{
-				
 //				S3Object object = s3.getObject(new GetObjectRequest(bucketName, inputKey));
 //				S3ObjectInputStream objectContent = object.getObjectContent();
 //				
