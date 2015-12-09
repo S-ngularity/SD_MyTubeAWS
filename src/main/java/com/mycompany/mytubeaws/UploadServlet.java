@@ -33,6 +33,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FilenameUtils;
+
+import java.util.UUID;
 
 /**
  *
@@ -102,6 +105,8 @@ public class UploadServlet extends HttpServlet
 					if (!item.isFormField())
 					{
 						String fileName = item.getName();
+						UUID id = UUID.randomUUID();
+						fileName = FilenameUtils.getBaseName(fileName) + "_ID-" + id.toString() + "." + FilenameUtils.getExtension(fileName);
 
 						File file = File.createTempFile("aws-java-sdk-upload", "");
 						item.write(file); // write form item to file (?)
