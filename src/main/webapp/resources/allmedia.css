@@ -1,0 +1,79 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/webmuseum/resources/opensans.woff') format('woff');
+}
+
+body
+{
+    background-color: #CFC9B2;
+    height: 100%;
+}
+
+#superHolder
+{
+	text-align: center;
+	align: center;
+}
+
+.indexHeader
+{
+	text-align: center;
+	align: center;
+	width: 50%;
+	margin: 1% 25% 2% 25%;
+	padding: 20px 0px 20px 0px;
+	background-color: #E3E0CA;
+}
+
+table, th, td {
+    
+}
+
+td
+{
+	height: 35px;
+}
+
+#listTableHeader
+{
+	border-bottom: 1px solid #999999;
+}
+
+#listTable
+{
+	width:40%; 
+    margin-left:30%; 
+    margin-right:30%;
+	margin-bottom: 3%;
+	border-collapse: collapse;
+	border: 1px solid #DDDDDD;
+	
+	font-size: 110%;
+	
+}
+
+tr:nth-child(odd) {background-color: #DFD9C2}
+tr:nth-child(even) {background-color: #EFE9D2}
+
+#listTableHeader
+{
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.uploadDiv
+{
+	margin: 0% 40.5% 0% 40.5%;
+	padding: 5px 0% 30px 0%;
+	background-color: #EFE9D2;
+}
+
+.superHolderResult
+{
+	text-align: center;
+	align: center;
+	font-size: 200%;
+	font-weight: bold;
+}
